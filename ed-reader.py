@@ -56,9 +56,10 @@ while True:
     # Check number of existing files at DEST_PATH. Skip if too many.
     # It's up to the WebServer to clean up.
     n_files_copied_str = subp.check_output('ls -l ' + BUF_TO_FILL + ' | wc -l', shell=True)
-    n_files_copied = int(n_files_copied_str)
+    n_files_copied = int(n_files_copied_str) - 1 # substract -1 for the 'total' line of 'ls' output
     print("n = ", n_files_copied)
-    if (n_files_copied > n_files):
+
+    if (n_files_copied >= n_files):
         print("Moving to temp: " + BUF_TO_FILL + ' -> ' + BUF_TO_COPY)
         p = subp.Popen(['rm', '-rf', BUF_TO_COPY]) #delete temp
         pout, perr = p.communicate()
@@ -86,6 +87,7 @@ while True:
         pout, perr = p.communicate()
         print(pout)
         print(perr)
+
 
     
 
